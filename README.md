@@ -1,5 +1,6 @@
-#  ShipIt.exe — AI Fanfiction Trope Engine
+# ⚡ ShipIt.exe — AI Fanfiction Trope Compatibility Engine
 
+**MSc AI/ML Mini Project — Christ (Deemed to be University), Department of MCA**
 
 ---
 
@@ -9,46 +10,66 @@
 |---|---|
 | `ShipIt_Project_Proposal.docx` | Formal one-pager for your professor's re-approval (research question, methodology, timeline, feature classification). |
 | `trope_taxonomy.json` | 16 curated fandom tropes with definitions + detection markers, modeled on AO3's tagging conventions. |
-| `01_generate_story.py` | Chapter-by-chapter story generator (Llama 3.1 / Mistral via Groq API). |
+| `01_generate_story.py` | Chapter-by-chapter story generator (Llama 3.1 via Groq API). |
 | `02_classify_tropes.py` | Per-chapter trope classifier — **fully tested, real code**, no mocking. |
 | `03_brainrot_mode.py` | Register-shift rewriter (Lore Mode → Brainrot Mode) preserving plot. |
+| `04_attention_lens.py` | Offline GPT-2 self-attention extraction, feeds the Attention Lens dashboard panel. |
+| `server.py` | Local/deployed Flask server — powers the **live** "Compile Story" button end to end (Groq generation → trope classification → brainrot rewrite → Wikipedia character portraits), holding `GROQ_API_KEY` server-side so it's never exposed to the browser. |
+| `requirements.txt` | Python dependencies for running/deploying `server.py`. |
+| `.env` | **Not committed to git.** Holds your local `GROQ_API_KEY` — see setup below. |
 | `demo_story_raw.json` | Hand-authored demo story (Superman × Spider-Man) used to seed and test the dashboard. |
 | `dashboard_data.json` | Merged story + real classification output + brainrot rewrites. |
-| `dashboard.html` | The interactive dashboard. Open directly in any browser. |
+| `dashboard.html` | The interactive dashboard. Can be viewed statically, but **must** be opened via `server.py` (`http://localhost:5000`) for the live Compile Story button and character portraits to work — see below. |
 
 ---
 
-## 2. How to run it live
+## 2. How to run it live (recommended path)
+
+This runs the dashboard as a real local web app, with a working Compile Story button.
 
 1. Get a free Groq API key: [console.groq.com](https://console.groq.com) → API Keys → Create.
-2. Set it as an environment variable:
-   ```bash
-   export GROQ_API_KEY="your-key-here"
+2. Create a `.env` file in this folder (same level as `server.py`) containing:
    ```
-3. Install dependencies and set up folders:
-   ```bash
-   pip install requests nltk transformers torch matplotlib sentence-transformers
-   mkdir -p data outputs
-   mv trope_taxonomy.json data/   # if not already there
+   GROQ_API_KEY=your-key-here
    ```
-4. Run the full pipeline, in order:
+   `server.py` loads this automatically on startup — no manual `export` needed. (You can still `export GROQ_API_KEY=...` in your shell instead if you prefer; either works.)
+3. Install dependencies:
    ```bash
-   python 01_generate_story.py --char-a "Elena" --char-b "Marcus" --out data/story_output.json
-   python 02_classify_tropes.py --story data/story_output.json --out data/story_classified.json
-   python 03_brainrot_mode.py --story data/story_classified.json --out data/story_brainrot.json
-   python 04_attention_lens.py --story data/story_classified.json --out data/attention_lens_data.json
-   python 06_merge_dashboard_data.py \
-     --classified data/story_classified.json \
-     --brainrot data/story_brainrot.json \
-     --attention data/attention_lens_data.json \
-     --out dashboard_data.json
-   python build_dashboard.py
+   pip install -r requirements.txt
    ```
-5. Open `dashboard.html` — no server needed.
+4. Start the server:
+   ```bash
+   python server.py
+   ```
+5. Open **http://localhost:5000** in your browser (not `dashboard.html` directly — double-clicking the file bypasses the server and the Compile Story button will fail).
+6. Type two characters and click **COMPILE STORY** — this calls Groq live, classifies tropes, generates the brainrot rewrite, and looks up character portraits, all server-side.
+
+### Deploying it publicly
+
+The app is also deployed on Render's free tier: `server.py` reads `GROQ_API_KEY` from a real environment variable in production (set in Render's dashboard, not from `.env` — `.env` stays local only and is gitignored). Build command: `pip install -r requirements.txt`. Start command: `gunicorn server:app`.
+
+### Running the offline pipeline manually (optional, advanced)
+
+`server.py` already runs steps 1–3 (generation, classification, brainrot) live per-request. You don't need to run the scripts below unless you want to regenerate the static `dashboard_data.json` demo data, or refresh the Attention Lens panel (which needs `torch`/`transformers` — deliberately kept out of the live server path since it's heavy and slow to cold-start):
+
+```bash
+pip install nltk transformers torch matplotlib sentence-transformers
+mkdir -p data outputs
+python 01_generate_story.py --char-a "Elena" --char-b "Marcus" --out data/story_output.json
+python 02_classify_tropes.py --story data/story_output.json --out data/story_classified.json
+python 03_brainrot_mode.py --story data/story_classified.json --out data/story_brainrot.json
+python 04_attention_lens.py --story data/story_classified.json --out data/attention_lens_data.json
+python 06_merge_dashboard_data.py \
+  --classified data/story_classified.json \
+  --brainrot data/story_brainrot.json \
+  --attention data/attention_lens_data.json \
+  --out dashboard_data.json
+python build_dashboard.py
+```
 
 Each step can be skipped if you don't want that feature yet (e.g. omit `--brainrot` or `--attention` in the merge step) — the dashboard just shows fewer panels.
 
-To just **see the demo**, open `dashboard.html` directly — no setup needed, it already contains a full worked example.
+To just **see the demo** without any setup, open `dashboard.html` directly — it already contains a full worked example, though the Compile Story button won't be live without `server.py` running.
 
 ---
 
