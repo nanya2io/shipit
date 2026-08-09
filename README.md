@@ -1,4 +1,4 @@
-#  ShipIt.exe — AI Fanfiction Trope Compatibility Engine
+#  ShipIt.exe — AI Fanfiction Trope Engine
 
 
 ---
