@@ -1,6 +1,6 @@
 {
   "meta": {
-    "note": "Generated via the full ShipIt.exe pipeline.",
+    "note": "Generated via the full LoreX pipeline.",
     "attention_note": "Attention weights from GPT-2's self-attention (final layer, averaged across heads, attention from the final token to each earlier token)."
   },
   "taxonomy": [

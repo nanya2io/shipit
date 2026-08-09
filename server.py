@@ -1,5 +1,5 @@
 """
-ShipIt.exe - Local Server
+LoreX - Local Server
 ============================
 Runs a small local web server so the dashboard can generate NEW character
 pairs live, in the browser, without ever exposing GROQ_API_KEY to the
@@ -96,7 +96,7 @@ def fetch_character_portrait(name):
     try:
         resp = requests.get(
             url,
-            headers={"User-Agent": "shipIT-dashboard/1.0 (local demo tool)"},
+            headers={"User-Agent": "loreX-dashboard/1.0 (local demo tool)"},
             timeout=5,
         )
         if resp.status_code != 200:

@@ -1,5 +1,5 @@
 """
-ShipIt.exe - Attention Lens (static report figure)
+LoreX - Attention Lens (static report figure)
 ======================================================
 Renders the same self-attention data shown in the interactive dashboard
 as a static matplotlib heatmap grid, suitable for pasting into a Word

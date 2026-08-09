@@ -1,4 +1,4 @@
-# ⚡ ShipIt.exe — AI Fanfiction Trope Compatibility Engine
+# ⚡ LoreX — AI Fanfiction Trope Compatibility Engine
 
 **MSc AI/ML Mini Project — Christ (Deemed to be University), Department of MCA**
 
@@ -46,7 +46,7 @@ This runs the dashboard as a real local web app, with a working Compile Story bu
 
 ### Deploying it publicly
 
-The app is also deployed on Render's free tier: `server.py` reads `GROQ_API_KEY` from a real environment variable in production (set in Render's dashboard, not from `.env` — `.env` stays local only and is gitignored). Build command: `pip install -r requirements.txt`. Start command: `gunicorn server:app`.
+The app is also deployed on Render's free tier: `server.py` reads `GROQ_API_KEY` from a real environment variable in production (set in Render's dashboard, not from `.env` — `.env` stays local only and is gitignored). Build command: `pip install -r requirements.txt`. Start command: `gunicorn server:app --timeout 120` (the extended timeout matters — Compile Story can make up to 8 sequential Groq calls with retry/backoff on rate limits, which comfortably exceeds gunicorn's 30s default and gets the worker killed mid-request otherwise).
 
 ### Running the offline pipeline manually (optional, advanced)
 

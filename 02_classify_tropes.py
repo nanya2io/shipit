@@ -1,5 +1,5 @@
 """
-ShipIt.exe - Trope Classification Engine
+LoreX - Trope Classification Engine
 ============================================
 Scores each generated chapter against the curated trope taxonomy and
 extracts the exact sentence(s) that triggered each detection, so every

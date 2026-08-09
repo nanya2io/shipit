@@ -1,5 +1,5 @@
 """
-ShipIt.exe - Story Generation Engine
+LoreX - Story Generation Engine
 =======================================
 Generates a 4-chapter narrative between two user-specified fictional
 characters, one chapter at a time, carrying prior chapters forward as

@@ -1,5 +1,5 @@
 """
-ShipIt.exe - Merge Pipeline Outputs
+LoreX - Merge Pipeline Outputs
 =======================================
 Combines the outputs of stages 01-04 into the single JSON structure
 dashboard.html expects. Run this after generating a new story so you
@@ -70,7 +70,7 @@ def main():
 
     output = {
         "meta": {
-            "note": "Generated via the full ShipIt.exe pipeline.",
+            "note": "Generated via the full LoreX pipeline.",
             "attention_note": (
                 "Attention weights from GPT-2's self-attention (final layer, "
                 "averaged across heads, attention from the final token to each "

@@ -1,5 +1,5 @@
 """
-ShipIt.exe - Attention Lens
+LoreX - Attention Lens
 ==============================
 Extracts real self-attention weights from GPT-2 for a given sentence and
 surfaces which words the model "looked at" most heavily -- a second,

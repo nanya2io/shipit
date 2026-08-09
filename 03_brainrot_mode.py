@@ -1,5 +1,5 @@
 """
-ShipIt.exe - Brainrot Mode
+LoreX - Brainrot Mode
 =============================
 Takes a generated chapter and rewrites it in current internet-slang
 register, WITHOUT changing the underlying plot events or character

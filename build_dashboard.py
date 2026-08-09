@@ -10,7 +10,7 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHIPIT.EXE</title>
+<title>LOREX</title>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -287,7 +287,7 @@ footer.window-footer{
 <body>
 
 <div id="bootOverlay">
-  <div class="boot-line" id="bl1">C:\&gt; LOADING SHIPIT.EXE...</div>
+  <div class="boot-line" id="bl1">C:\&gt; LOADING LOREX...</div>
   <div class="boot-line" id="bl2">C:\&gt; INITIALIZING CROSSOVER DYNAMIC ENGINE...</div>
   <div class="boot-line" id="bl3">C:\&gt; LOADING TROPE TAXONOMY.JSON... OK (16 tropes)</div>
   <div class="boot-line" id="bl4">C:\&gt; CONNECTING TO VIBES.DLL... OK</div>
@@ -296,7 +296,7 @@ footer.window-footer{
 
 <div class="window">
   <div class="titlebar">
-    <div class="name"><span class="icon"></span> C:\SHIPIT.EXE</div>
+    <div class="name"><span class="icon"></span> C:\LOREX.EXE</div>
     <div class="win-btns"><span>_</span><span>□</span><span>X</span></div>
   </div>
   <div class="menubar"><span>File</span><span>Edit</span><span>Ship</span><span>Chaos</span><span>Help</span></div>
@@ -304,7 +304,7 @@ footer.window-footer{
 
   <div class="content">
     <div class="hero">
-      <h1>SHIPIT.EXE</h1>
+      <h1>LOREX</h1>
       <p>type in two (fictional!) characters from anywhere -- same universe, different universe, doesn't matter. watch the AI write their whole crossover team-up arc, chapter by chapter, then tell you exactly which character-dynamic tropes it just committed to canon. no romance, all found-family/rivalry/team-up energy.</p>
       <div class="badge-row">
         <span class="pixel-badge">chapter-by-chapter reveal</span>
@@ -385,7 +385,7 @@ async function loadDemo(){
   }
 
   const originalBtnText = btn.textContent;
-  btn.textContent = 'COMPILING... (calls a real LLM, ~15-30s)';
+  btn.textContent = 'COMPILING...';
   btn.disabled = true;
   if(hint) hint.textContent = `generating "${charA} × ${charB}" live via your local server...`;
 
