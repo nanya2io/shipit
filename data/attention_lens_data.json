@@ -1,0 +1,299 @@
+{
+  "the_spark": {
+    "sentence": "Something about the way the man held the violin was... deliberate.",
+    "tokens": [
+      {
+        "token": "Something",
+        "attention": 1.0
+      },
+      {
+        "token": "about",
+        "attention": 0.0491
+      },
+      {
+        "token": "the",
+        "attention": 0.0241
+      },
+      {
+        "token": "way",
+        "attention": 0.0225
+      },
+      {
+        "token": "the",
+        "attention": 0.0294
+      },
+      {
+        "token": "man",
+        "attention": 0.0311
+      },
+      {
+        "token": "held",
+        "attention": 0.003
+      },
+      {
+        "token": "the",
+        "attention": 0.0
+      },
+      {
+        "token": "violin",
+        "attention": 0.0361
+      },
+      {
+        "token": "was",
+        "attention": 0.0366
+      },
+      {
+        "token": "...",
+        "attention": 0.0496
+      },
+      {
+        "token": "deliberate",
+        "attention": 0.0404
+      },
+      {
+        "token": ".",
+        "attention": 0.2754
+      }
+    ],
+    "source_trope": "Hurt/Comfort",
+    "chapter_number": 1
+  },
+  "the_shift": {
+    "sentence": "Their gazes met, and for a moment, Batman saw something there, a flicker of... not respect, perhaps, but a grudging acknowledgment of the other's skills.",
+    "tokens": [
+      {
+        "token": "Their",
+        "attention": 1.0
+      },
+      {
+        "token": "g",
+        "attention": 0.0113
+      },
+      {
+        "token": "azes",
+        "attention": 0.018
+      },
+      {
+        "token": "met",
+        "attention": 0.0145
+      },
+      {
+        "token": ",",
+        "attention": 0.0422
+      },
+      {
+        "token": "and",
+        "attention": 0.0356
+      },
+      {
+        "token": "for",
+        "attention": 0.0123
+      },
+      {
+        "token": "a",
+        "attention": 0.0037
+      },
+      {
+        "token": "moment",
+        "attention": 0.023
+      },
+      {
+        "token": ",",
+        "attention": 0.0388
+      },
+      {
+        "token": "Batman",
+        "attention": 0.1512
+      },
+      {
+        "token": "saw",
+        "attention": 0.0475
+      },
+      {
+        "token": "something",
+        "attention": 0.0401
+      },
+      {
+        "token": "there",
+        "attention": 0.0197
+      },
+      {
+        "token": ",",
+        "attention": 0.0301
+      },
+      {
+        "token": "a",
+        "attention": 0.0103
+      },
+      {
+        "token": "fl",
+        "attention": 0.0018
+      },
+      {
+        "token": "icker",
+        "attention": 0.0035
+      },
+      {
+        "token": "of",
+        "attention": 0.004
+      },
+      {
+        "token": "...",
+        "attention": 0.0156
+      },
+      {
+        "token": "not",
+        "attention": 0.0023
+      },
+      {
+        "token": "respect",
+        "attention": 0.037
+      },
+      {
+        "token": ",",
+        "attention": 0.0152
+      },
+      {
+        "token": "perhaps",
+        "attention": 0.0174
+      },
+      {
+        "token": ",",
+        "attention": 0.0074
+      },
+      {
+        "token": "but",
+        "attention": 0.0124
+      },
+      {
+        "token": "a",
+        "attention": 0.007
+      },
+      {
+        "token": "gr",
+        "attention": 0.0
+      },
+      {
+        "token": "udging",
+        "attention": 0.0029
+      },
+      {
+        "token": "acknowledgment",
+        "attention": 0.0146
+      },
+      {
+        "token": "of",
+        "attention": 0.0167
+      },
+      {
+        "token": "the",
+        "attention": 0.0168
+      },
+      {
+        "token": "other",
+        "attention": 0.0103
+      },
+      {
+        "token": "'s",
+        "attention": 0.0097
+      },
+      {
+        "token": "skills",
+        "attention": 0.011
+      },
+      {
+        "token": ".",
+        "attention": 0.2901
+      }
+    ],
+    "source_trope": "Rivals to Allies",
+    "chapter_number": 2
+  },
+  "the_resolution": {
+    "sentence": "Batman saw a glimmer of respect, of trust, of a connection that went beyond mere partnership.",
+    "tokens": [
+      {
+        "token": "Batman",
+        "attention": 1.0
+      },
+      {
+        "token": "saw",
+        "attention": 0.0904
+      },
+      {
+        "token": "a",
+        "attention": 0.031
+      },
+      {
+        "token": "gl",
+        "attention": 0.005
+      },
+      {
+        "token": "immer",
+        "attention": 0.0
+      },
+      {
+        "token": "of",
+        "attention": 0.0142
+      },
+      {
+        "token": "respect",
+        "attention": 0.0248
+      },
+      {
+        "token": ",",
+        "attention": 0.0816
+      },
+      {
+        "token": "of",
+        "attention": 0.0155
+      },
+      {
+        "token": "trust",
+        "attention": 0.0109
+      },
+      {
+        "token": ",",
+        "attention": 0.006
+      },
+      {
+        "token": "of",
+        "attention": 0.0043
+      },
+      {
+        "token": "a",
+        "attention": 0.0072
+      },
+      {
+        "token": "connection",
+        "attention": 0.0092
+      },
+      {
+        "token": "that",
+        "attention": 0.0287
+      },
+      {
+        "token": "went",
+        "attention": 0.0
+      },
+      {
+        "token": "beyond",
+        "attention": 0.0217
+      },
+      {
+        "token": "mere",
+        "attention": 0.0076
+      },
+      {
+        "token": "partnership",
+        "attention": 0.038
+      },
+      {
+        "token": ".",
+        "attention": 0.3086
+      }
+    ],
+    "source_trope": "Rivals to Allies",
+    "chapter_number": 4
+  }
+}

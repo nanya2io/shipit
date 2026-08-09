@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHIPIT.EXE</title>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hotpink:#FF2E9A;
+  --cyan:#00E5FF;
+  --lime:#C6FF00;
+  --purple:#7B2FF7;
+  --deep:#2B0059;
+  --paper:#FFF7E4;
+  --ink:#241938;
+  --chrome-lt:#F1F0F6;
+  --chrome-dk:#B9B7C9;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(123,47,247,0.35), transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(255,46,154,0.30), transparent 45%),
+    #0A0014;
+  font-family:'Space Mono', monospace;
+  color: var(--ink);
+  padding: 28px 14px 60px;
+  position:relative;
+  overflow-x:hidden;
+}
+/* starfield */
+body::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(2px 2px at 10% 15%, #fff, transparent),
+    radial-gradient(2px 2px at 80% 10%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 40% 60%, #fff, transparent),
+    radial-gradient(2px 2px at 60% 85%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 92% 40%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 25% 90%, #fff, transparent),
+    radial-gradient(2px 2px at 55% 25%, #fff, transparent);
+  opacity:0.5;
+}
+/* scanlines */
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:200;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: multiply;
+}
+.window{
+  max-width: 900px; margin: 0 auto;
+  background: var(--chrome-lt);
+  border: 3px solid #000;
+  border-radius: 10px 10px 4px 4px;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.55), 0 0 60px rgba(255,46,154,0.25);
+  position:relative; z-index:1;
+}
+.titlebar{
+  background: linear-gradient(90deg, var(--hotpink), var(--purple) 70%);
+  border-radius: 7px 7px 0 0;
+  padding: 8px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom: 3px solid #000;
+}
+.titlebar .name{
+  font-family:'VT323', monospace; color:#fff; font-size:1.25rem; letter-spacing:1px;
+  display:flex; align-items:center; gap:8px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+}
+.titlebar .name .icon{
+  width:18px; height:18px; background: var(--lime); border:2px solid #000; display:inline-block;
+}
+.win-btns{ display:flex; gap:6px; }
+.win-btns span{
+  width:20px; height:20px; background:var(--chrome-lt); border:2px solid #000;
+  display:flex; align-items:center; justify-content:center; font-family:'VT323',monospace;
+  font-size:0.9rem; font-weight:bold; box-shadow: 1px 1px 0 #000;
+}
+.menubar{
+  background: var(--chrome-lt); border-bottom:2px solid #000;
+  padding:5px 12px; display:flex; gap:18px;
+  font-family:'VT323', monospace; font-size:1.05rem; color:#333;
+}
+.marquee-strip{
+  background:#000; color: var(--lime); overflow:hidden; white-space:nowrap;
+  border-bottom:2px solid #000; padding:4px 0;
+  font-family:'VT323',monospace; font-size:1.1rem; letter-spacing:1px;
+}
+.marquee-strip span{ display:inline-block; padding-left:100%; animation: marquee 18s linear infinite; }
+@keyframes marquee{ to{ transform: translateX(-100%); } }
+
+.content{ padding: 22px 24px 10px; background:
+  repeating-linear-gradient(180deg, var(--paper) 0px, var(--paper) 27px, #F3E9CE 28px);
+}
+.hero{ text-align:center; padding: 10px 0 22px; }
+.hero h1{
+  font-family:'Bungee', cursive; font-size: clamp(1.7rem, 6vw, 2.6rem);
+  color: var(--hotpink); margin:0 0 6px;
+  -webkit-text-stroke: 1.5px #000;
+  text-shadow: 3px 3px 0 var(--cyan), 6px 6px 0 #000;
+  letter-spacing:1px;
+}
+.hero p{ font-size:0.85rem; color:#4a3f66; max-width:520px; margin:0 auto; line-height:1.5; }
+.badge-row{ display:flex; justify-content:center; gap:10px; margin-top:14px; flex-wrap:wrap; }
+.pixel-badge{
+  font-family:'VT323',monospace; font-size:0.95rem; background:var(--cyan);
+  border:2px solid #000; padding:3px 10px; box-shadow:2px 2px 0 #000;
+}
+
+.dialog{
+  background: var(--chrome-lt); border:2px solid #000; box-shadow: 4px 4px 0 #000;
+  padding:18px 18px 20px; margin: 0 0 22px;
+}
+.dialog h2{
+  font-family:'VT323',monospace; font-size:1.3rem; margin:0 0 16px; color:#000;
+  background: var(--lime); display:inline-block; padding:2px 10px; border:2px solid #000;
+}
+.duo-row{
+  display:flex; align-items:flex-start; gap:8px; margin-bottom:16px;
+}
+.duo-slot{
+  flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.duo-connector{
+  flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+  width:46px; margin-top:34px;
+}
+.duo-connector-x{
+  font-family:'Bungee', cursive; font-size:1.3rem; color:#fff;
+  background: var(--hotpink); border:3px solid #000; border-radius:50%;
+  width:46px; height:46px; display:flex; align-items:center; justify-content:center;
+  box-shadow:3px 3px 0 #000; transform:rotate(-8deg);
+}
+@keyframes duoPulse{
+  0%{ transform:rotate(-8deg) scale(1); background:var(--hotpink); }
+  15%{ transform:rotate(14deg) scale(1.35); background:var(--lime); }
+  30%{ transform:rotate(-18deg) scale(1.25); background:var(--cyan); }
+  45%{ transform:rotate(10deg) scale(1.3); background:var(--hotpink); }
+  60%{ transform:rotate(-12deg) scale(1.15); }
+  75%{ transform:rotate(6deg) scale(1.05); }
+  100%{ transform:rotate(-8deg) scale(1); background:var(--hotpink); }
+}
+.duo-connector-x.pulsing{
+  animation: duoPulse 0.7s ease-in-out;
+}
+.portrait-card{
+  width:100%; max-width:120px; padding:8px 8px 12px; background:#fff; border:2px solid #000;
+  box-shadow:3px 3px 0 #000; transform:rotate(-2deg); transition:transform .15s ease;
+  text-align:center;
+}
+.duo-slot:last-child .portrait-card{ transform:rotate(2deg); }
+.portrait-card:hover{ transform:rotate(0deg) translateY(-2px); }
+.portrait-frame{
+  width:100%; aspect-ratio:1/1; background:
+    repeating-linear-gradient(45deg, var(--chrome-lt), var(--chrome-lt) 6px, var(--chrome-dk) 6px, var(--chrome-dk) 7px);
+  border:2px solid #000;
+  display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:6px;
+}
+.portrait-frame img{ width:100%; height:100%; object-fit:cover; }
+.portrait-frame .portrait-placeholder{
+  font-family:'Bungee', cursive; font-size:1.5rem; color:#fff; -webkit-text-stroke:1.5px #000;
+}
+.portrait-label{
+  font-family:'VT323',monospace; font-size:0.85rem; color:#333; line-height:1.15;
+  word-break:break-word; min-height:1.1em;
+}
+.duo-slot .field{ width:100%; max-width:120px; }
+.duo-slot .field label{ text-align:center; }
+.duo-slot .field input{ text-align:center; }
+.field label{ font-family:'VT323',monospace; font-size:1rem; display:block; margin-bottom:3px; }
+.field input{
+  width:100%; font-family:'Space Mono',monospace; font-size:0.95rem;
+  padding:8px 10px; border:2px inset #888; background:#fff;
+}
+.compile-btn{
+  font-family:'VT323',monospace; font-size:1.2rem; letter-spacing:1px;
+  background: linear-gradient(180deg, #fff, var(--chrome-dk));
+  border: 2px outset #ddd; padding:9px 22px; cursor:pointer;
+  box-shadow: 3px 3px 0 #000; color:#000;
+}
+.compile-btn:active{ border-style: inset; transform: translate(2px,2px); box-shadow:1px 1px 0 #000; }
+.dialog .hint{ font-size:0.72rem; color:#665; margin-top:8px; }
+
+.chapter-nav{ display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.disk-tab{
+  font-family:'VT323',monospace; font-size:1rem; background:var(--chrome-lt);
+  border:2px solid #000; padding:6px 12px; cursor:pointer; display:flex; align-items:center; gap:6px;
+  box-shadow:2px 2px 0 #000;
+}
+.disk-tab.locked{ opacity:0.4; cursor:not-allowed; }
+.disk-tab.active{ background:var(--hotpink); color:#fff; }
+.disk-tab .floppy{ width:12px; height:12px; background:#333; border:1px solid #000; }
+
+.diary-card{
+  position:relative; background: #fffdf7; border:2px solid #000;
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.3); padding: 26px 22px 20px; margin-bottom:18px;
+  background-image: repeating-linear-gradient(180deg, transparent 0, transparent 26px, rgba(120,140,200,0.18) 27px);
+}
+.diary-card::before{
+  content:'📌'; position:absolute; top:-14px; left:20px; font-size:1.4rem;
+  transform: rotate(-12deg);
+}
+.diary-card h3{
+  font-family:'Bungee', cursive; color:var(--purple); font-size:1.15rem; margin:0 0 4px;
+}
+.diary-card .role-tag{
+  font-family:'VT323',monospace; font-size:0.85rem; color:#888; margin-bottom:12px; display:block;
+}
+.diary-card p{ font-size:0.92rem; line-height:1.75; margin:0; white-space:pre-wrap; }
+.diary-card.brainrot p{ font-family:'Space Mono',monospace; font-weight:700; color:#1a0033; }
+
+.mode-toggle{
+  display:flex; align-items:center; gap:10px; margin: 4px 0 16px; font-family:'VT323',monospace; font-size:1.05rem;
+}
+.switch{
+  width:64px; height:30px; background:#333; border:2px solid #000; border-radius:20px;
+  position:relative; cursor:pointer; flex-shrink:0;
+}
+.switch .knob{
+  position:absolute; top:2px; left:2px; width:22px; height:22px; border-radius:50%;
+  background: linear-gradient(180deg,#fff,#ccc); border:2px solid #000; transition: left .2s;
+}
+.switch.on{ background: var(--hotpink); }
+.switch.on .knob{ left:36px; background: linear-gradient(180deg,#fff,var(--lime)); }
+.glitch{ animation: glitchAnim 0.35s steps(2); }
+@keyframes glitchAnim{
+  0%{ filter:none; transform:translate(0);}
+  30%{ filter: hue-rotate(90deg); transform: translate(-2px,1px);}
+  60%{ filter: hue-rotate(-90deg); transform: translate(2px,-1px);}
+  100%{ filter:none; transform:translate(0);}
+}
+
+.next-btn{
+  font-family:'VT323',monospace; font-size:1.2rem; background: var(--lime);
+  border:2px solid #000; padding:8px 18px; cursor:pointer; box-shadow:3px 3px 0 #000;
+  display:block; margin: 0 auto 24px;
+}
+.next-btn:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 #000; }
+
+.meter-box{
+  background:var(--chrome-lt); border:2px solid #000; padding:12px 14px; margin-bottom:18px;
+  box-shadow: 3px 3px 0 #000;
+}
+.meter-box .label{ font-family:'VT323',monospace; font-size:1.05rem; margin-bottom:6px; }
+.heart-track{ display:flex; gap:4px; }
+.heart-track span{ font-size:1.3rem; filter: grayscale(1) opacity(0.35); transition:.3s; }
+.heart-track span.filled{ filter:none; }
+
+.trope-badges{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.trope-sticker{
+  font-family:'VT323',monospace; font-size:0.95rem; background:#fff;
+  border:2px solid #000; padding:6px 12px; box-shadow:2px 2px 0 #000;
+  transform: rotate(var(--r, -2deg)); position:relative; cursor:default;
+}
+.trope-sticker:nth-child(2n){ --r:2deg; background:var(--cyan); }
+.trope-sticker:nth-child(3n){ --r:-1deg; background:var(--lime); }
+.trope-sticker .score{ font-size:0.75rem; color:#555; }
+.evidence-box{
+  font-family:'Space Mono',monospace; font-size:0.75rem; color:#333; background:#fffce0;
+  border:1px dashed #999; padding:6px 8px; margin-top:6px; display:none;
+}
+.trope-sticker:hover .evidence-box{ display:block; }
+
+.structural-panel{
+  background:#111; color:var(--lime); border:2px solid #000; padding:14px; margin-bottom:20px;
+  font-family:'VT323',monospace; box-shadow:3px 3px 0 #000;
+}
+.structural-panel h2{ color:var(--cyan); background:none; border:none; padding:0; margin-bottom:10px; }
+.structural-row{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 14px; padding:6px 0; border-bottom:1px dotted #444; font-size:1rem;}
+.structural-row .role-label{ color:var(--cyan); font-weight:bold; flex-shrink:0; }
+.structural-row .trope-list{ text-align:right; flex:1; min-width:180px; }
+
+.attention-panel{
+  background:#0a0a0a; color:var(--cyan); border:2px solid #000; padding:14px; margin-bottom:20px;
+  font-family:'VT323',monospace; box-shadow:3px 3px 0 #000;
+}
+.attention-panel h2{ color:var(--lime); margin-bottom:6px; }
+.attention-panel .subnote{ color:#888; font-size:0.85rem; margin-bottom:12px; line-height:1.4; }
+.attention-sentence{ font-size:1.2rem; line-height:2.4; margin-bottom:6px; }
+.attn-token{
+  display:inline-block; padding:2px 4px; margin:1px; border-radius:2px;
+  font-family:'Space Mono',monospace; font-size:0.95rem; color:#fff;
+}
+.attn-legend{ display:flex; align-items:center; gap:8px; font-size:0.85rem; color:#888; margin-top:8px; }
+.attn-legend .swatch{ width:60px; height:10px; background:linear-gradient(90deg, rgba(0,229,255,0.08), var(--cyan)); border:1px solid #444; }
+
+footer.window-footer{
+  border-top:2px solid #000; background:var(--chrome-lt); padding:14px 20px;
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:14px; align-items:center;
+  font-family:'VT323',monospace; font-size:0.95rem;
+}
+.counter{
+  background:#000; color:var(--lime); padding:4px 8px; border:2px inset #333; letter-spacing:2px;
+}
+.webring{ display:flex; gap:10px; align-items:center; }
+.webring a{ color:var(--purple); text-decoration:none; border-bottom:1px dashed var(--purple); }
+
+@media(max-width:640px){
+  .duo-row{ flex-direction:column; align-items:center; }
+  .duo-slot{ width:100%; max-width:200px; }
+  .duo-connector{ margin-top:0; width:auto; }
+  .duo-connector-x{ transform:rotate(0deg); }
+}
+
+/* boot sequence overlay */
+#bootOverlay{
+  position:fixed; inset:0; z-index:1000; background:#000;
+  font-family:'VT323', monospace; color:#00FF66; font-size:1.3rem;
+  padding: 60px 40px; line-height:1.9;
+  display:flex; flex-direction:column; justify-content:center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#bootOverlay.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+#bootOverlay .boot-line{ opacity:0; white-space:pre; }
+#bootOverlay .boot-line.show{ opacity:1; }
+#bootOverlay .cursor-blink{ display:inline-block; width:10px; height:1.1em; background:#00FF66; margin-left:4px; animation: blink 0.8s steps(1) infinite; vertical-align:middle; }
+@keyframes blink{ 50%{ opacity:0; } }
+
+/* cursor sparkle trail */
+.sparkle-trail{
+  position:fixed; pointer-events:none; z-index:999;
+  font-size: 14px; user-select:none;
+  animation: sparkleFade 0.7s ease-out forwards;
+}
+@keyframes sparkleFade{
+  0%{ opacity:1; transform: translateY(0) scale(1) rotate(0deg); }
+  100%{ opacity:0; transform: translateY(-22px) scale(0.4) rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<div id="bootOverlay">
+  <div class="boot-line" id="bl1">C:\&gt; LOADING SHIPIT.EXE...</div>
+  <div class="boot-line" id="bl2">C:\&gt; INITIALIZING CROSSOVER DYNAMIC ENGINE...</div>
+  <div class="boot-line" id="bl3">C:\&gt; LOADING TROPE TAXONOMY.JSON... OK (16 tropes)</div>
+  <div class="boot-line" id="bl4">C:\&gt; CONNECTING TO VIBES.DLL... OK</div>
+  <div class="boot-line" id="bl5">C:\&gt; READY.<span class="cursor-blink"></span></div>
+</div>
+
+<div class="window">
+  <div class="titlebar">
+    <div class="name"><span class="icon"></span> C:\SHIPIT.EXE</div>
+    <div class="win-btns"><span>_</span><span>□</span><span>X</span></div>
+  </div>
+  <div class="menubar"><span>File</span><span>Edit</span><span>Ship</span><span>Chaos</span><span>Help</span></div>
+  <div class="marquee-strip"><span>★ NOW LOADING: CROSSOVER DYNAMIC ENGINE ★ 100% REAL AI CHARACTER TEAM-UPS ★ NO CAP ★ BEST VIEWED AT 1024x768 ★ CLICK NEXT TO REVEAL CHAPTER ★</span></div>
+
+  <div class="content">
+    <div class="hero">
+      <h1>SHIPIT.EXE</h1>
+      <p>type in two (fictional!) characters from anywhere -- same universe, different universe, doesn't matter. watch the AI write their whole crossover team-up arc, chapter by chapter, then tell you exactly which character-dynamic tropes it just committed to canon. no romance, all found-family/rivalry/team-up energy.</p>
+      <div class="badge-row">
+        <span class="pixel-badge">chapter-by-chapter reveal</span>
+        <span class="pixel-badge">explainable trope AI</span>
+        <span class="pixel-badge">brainrot mode included</span>
+      </div>
+    </div>
+
+    <div class="dialog">
+      <h2>LOAD YOUR DUO</h2>
+      <div class="duo-row">
+        <div class="duo-slot">
+          <div class="portrait-card">
+            <div class="portrait-frame" id="portraitFrameA"><span class="portrait-placeholder">?</span></div>
+            <div class="portrait-label" id="portraitLabelA"></div>
+          </div>
+          <div class="field"><label>Character A</label><input id="charA" placeholder="e.g. Superman"></div>
+        </div>
+        <div class="duo-connector"><div class="duo-connector-x">&times;</div></div>
+        <div class="duo-slot">
+          <div class="portrait-card">
+            <div class="portrait-frame" id="portraitFrameB"><span class="portrait-placeholder">?</span></div>
+            <div class="portrait-label" id="portraitLabelB"></div>
+          </div>
+          <div class="field"><label>Character B</label><input id="charB" placeholder="e.g. Spider-Man"></div>
+        </div>
+      </div>
+      <button class="compile-btn" onclick="loadDemo()">COMPILE STORY &gt;&gt;</button>
+      <div class="hint" id="demoHint"></div>
+    </div>
+
+    <div class="chapter-nav" id="chapterNav"></div>
+
+    <div id="chapterArea"></div>
+
+    <button class="next-btn" id="nextBtn" onclick="revealNext()">NEXT CHAPTER &gt;&gt;</button>
+
+    <div class="meter-box">
+      <div class="label">🤝 BOND METER 🤝</div>
+      <div class="heart-track" id="heartTrack"></div>
+    </div>
+
+    <div class="trope-badges" id="tropeBadges"></div>
+
+    <div class="attention-panel" id="attentionPanel" style="display:none;">
+      <h2>&gt; ATTENTION LENS</h2>
+      <div class="subnote" id="attentionNote"></div>
+      <div class="attention-sentence" id="attentionSentence"></div>
+      <div class="attn-legend"><span class="swatch"></span> low → high self-attention weight</div>
+    </div>
+
+    <div class="structural-panel">
+      <h2>&gt; STRUCTURAL TROPE MAP</h2>
+      <div id="structuralRows"></div>
+    </div>
+  </div>
+
+  <footer class="window-footer">
+    <div class="counter" id="hitCounter">VISITORS: 004127</div>
+    <div class="webring">
+      <a href="#">&lt;&lt; PREV SHIP</a>
+      <a href="#">RANDOM</a>
+      <a href="#">NEXT SHIP &gt;&gt;</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+const DATA = {"meta": {"note": "Generated via the full ShipIt.exe pipeline.", "attention_note": "Attention weights from GPT-2's self-attention (final layer, averaged across heads, attention from the final token to each earlier token)."}, "taxonomy": [{"id": "forced_team_up", "name": "Forced Team-Up", "definition": "Circumstances compel two characters who wouldn't normally work together to collaborate against their initial preference.", "markers": ["had no choice", "stuck working together", "paired against", "forced to team up", "no other option"]}, {"id": "rivals_to_allies", "name": "Rivals to Allies", "definition": "Characters who begin in competition or conflict develop genuine mutual respect and become allies through shared adversity.", "markers": ["worthy opponent", "respect", "finally understood", "equal", "impressed despite", "on the same side"]}, {"id": "found_family", "name": "Found Family", "definition": "Characters build a familial, non-romantic bond with people who are not biologically related, often replacing or supplementing absent family.", "markers": ["like family", "chosen family", "took care of", "protect each other", "home", "belonged"]}, {"id": "found_siblings", "name": "Found Siblings", "definition": "Two characters develop a sibling-like bond -- protective, teasing, unconditionally loyal -- despite no biological relation.", "markers": ["like a sister", "like a brother", "annoying but", "always got my back", "family now"]}, {"id": "odd_couple", "name": "Odd Couple", "definition": "Characters with contrasting personalities, values, or methods are forced into cooperation, and their differences become a source of both friction and strength.", "markers": ["so different", "unlikely pair", "never expected", "opposite of", "shouldn't work but"]}, {"id": "secret_identity", "name": "Secret Identity", "definition": "One character conceals a crucial truth about themselves (an identity, power, or origin) from the other, creating tension around eventual discovery.", "markers": ["couldn't tell them", "secret", "if they knew", "hidden truth", "mask", "real identity"]}, {"id": "hurt_comfort", "name": "Hurt/Comfort", "definition": "One character is physically or emotionally wounded, and the other provides platonic care, support, or protection.", "markers": ["wounded", "held", "bandaged", "stayed by", "you're safe now", "took care of", "comforted"]}, {"id": "protective_streak", "name": "Protective Streak", "definition": "One character displays strong instinctive protectiveness over the other, often before real trust has been established.", "markers": ["stepped between", "wouldn't let anyone", "protect", "guarded", "shielded"]}, {"id": "mentor_and_student", "name": "Mentor and Student", "definition": "A more experienced character guides a less experienced one, with the dynamic evolving as the student grows into their own capability.", "markers": ["taught", "showed them how", "learned from", "wasn't ready", "proved themselves"]}, {"id": "miscommunication", "name": "Miscommunication", "definition": "Conflict or delay is driven primarily by characters misunderstanding each other's words, actions, or intentions.", "markers": ["misunderstood", "didn't mean", "wrong idea", "assumed", "never explained"]}, {"id": "role_reversal", "name": "Role Reversal", "definition": "Characters swap typical dynamics of power, dependence, or expertise, forcing new interaction patterns.", "markers": ["now it was", "roles reversed", "for once", "the tables had turned"]}, {"id": "betrayal_and_reconciliation", "name": "Betrayal and Reconciliation", "definition": "Trust between characters is broken by a real or perceived betrayal, and the story tracks whether and how it's repaired.", "markers": ["betrayed", "how could you", "trusted you", "made it right", "forgive"]}, {"id": "fish_out_of_water", "name": "Fish Out of Water", "definition": "A character finds themselves operating by unfamiliar rules, culture, or context (often the driving premise of a crossover), and must adapt.", "markers": ["not from around here", "different rules", "wasn't used to", "strange to them", "different world"]}, {"id": "second_chance", "name": "Second Chance", "definition": "Characters with a lapsed or damaged relationship are given renewed opportunity to reconnect.", "markers": ["years later", "again", "second chance", "back then", "used to", "remembered when"]}, {"id": "loyalty_tested", "name": "Loyalty Tested", "definition": "A character faces a situation that directly tests where their loyalty truly lies, often between competing obligations.", "markers": ["had to choose", "loyalty", "whose side", "torn between", "proved where"]}, {"id": "unlikely_alliance", "name": "Unlikely Alliance", "definition": "Characters from fundamentally different worlds, value systems, or factions set aside their differences to cooperate toward a shared goal.", "markers": ["never thought we'd", "different worlds", "common enemy", "set aside", "worked together despite"]}], "story": {"char_a": "Superman", "char_b": "Spider-Man", "chapters": [{"chapter_number": 1, "id": "the_spark", "title": "The Spark", "structural_role": "setup", "text": "The tear in the sky over Metropolis looked like a crack in glass, edges sparking gold, and Superman was already flying toward it when something came through first -- a kid in a red-and-blue suit, mid-swing, mid-sentence, tumbling out of a web-line that no longer connected to anything. \"Okay, that is NOT my building,\" the kid said, scrambling upright on a rooftop that definitely wasn't Queens. Superman landed a few feet away, more careful than he needed to be. \"You're not from around here.\" \"Yeah, I got that, thanks, big guy who's just -- casually flying, cool, that's fine, I'm fine.\" The kid's mask swiveled up, taking in the cape, the S, the general aura of a man who benched planets for fun. \"Please tell me you're one of the good ones.\" \"I could ask you the same thing.\" \"Spider-Man. Friendly neighborhood, usually, current neighborhood unclear.\" He gestured at the still-sparking tear overhead. \"That thing spit me out about ninety seconds ago and I've already decided I don't love it.\" Superman studied the tear, doing the math on gravitational shear and dimensional bleed, and didn't love it either. \"Superman. And that's not closing on its own.\" \"Cool. Cool cool cool. So what's the plan?\" \"You're the one who fell through it. Any idea what's on the other side?\" Spider-Man was quiet for a second, and when he answered, some of the jokes dropped out of his voice. \"Yeah. My city. Still standing, last I checked. I'd like to keep it that way.\" Superman nodded once, already recalculating the day. \"Then let's go see what's holding it open.\"", "detected_tropes": [{"trope_id": "secret_identity", "trope_name": "Secret Identity", "score": 0.22, "evidence": [{"sentence": "\"You're not from around here.\" \"Yeah, I got that, thanks, big guy who's just -- casually flying, cool, that's fine, I'm fine.\" The kid's mask swiveled up, taking in the cape, the S, the general aura of a man who benched planets for fun.", "matched_markers": ["mask"], "method": "keyword"}]}, {"trope_id": "fish_out_of_water", "trope_name": "Fish Out of Water", "score": 0.22, "evidence": [{"sentence": "\"You're not from around here.\" \"Yeah, I got that, thanks, big guy who's just -- casually flying, cool, that's fine, I'm fine.\" The kid's mask swiveled up, taking in the cape, the S, the general aura of a man who benched planets for fun.", "matched_markers": ["not from around here"], "method": "keyword"}]}], "top_trope": "Secret Identity", "brainrot_text": "ok so there's a whole TEAR in the sky over Metropolis, looks like cracked glass, gold sparks and everything, and Superman's already flying at it when a KID just falls out of it mid-swing like \"okay that is NOT my building.\" Superman lands like the responsible adult he is. \"you're not from around here.\" \"yeah I got that thanks, big guy who's just CASUALLY FLYING, cool, that's fine, I'm fine.\" kid clocks the cape, the S, the whole vibe. \"please tell me you're one of the good ones.\" \"I could ask you the same thing.\" \"Spider-Man. friendly neighborhood, usually, current neighborhood UNCLEAR.\" points at the still-sparking tear. \"that thing spit me out ninety seconds ago and I already don't love it.\" Superman doing math in his head, also doesn't love it. \"that's not closing on its own.\" \"cool cool cool. so what's the plan?\" and then kid gets serious for a sec. \"my city's on the other side. still standing last I checked. wanna keep it that way.\" Superman's like say less. \"then let's go see what's holding it open.\" NEW DUO WHO DIS.", "attention_lens": {"sentence": "\"You're not from around here.\" \"Yeah, I got that, thanks, big guy who's just -- casually flying, cool, that's fine, I'm fine.\" The kid's mask swiveled up, taking in the cape, the S, the general aura of a man who benched planets for fun.", "tokens": [{"token": "\"You're", "attention": 1.0}, {"token": "not", "attention": 0.5201}, {"token": "from", "attention": 0.6235}, {"token": "around", "attention": 0.7294}, {"token": "here.\"", "attention": 0.6163}, {"token": "\"Yeah,", "attention": 0.2751}, {"token": "I", "attention": 0.2147}, {"token": "got", "attention": 0.6836}, {"token": "that,", "attention": 0.8953}, {"token": "thanks,", "attention": 0.4245}, {"token": "big", "attention": 0.5934}, {"token": "guy", "attention": 0.6314}, {"token": "who's", "attention": 0.0}, {"token": "just", "attention": 0.7193}, {"token": "--", "attention": 0.7175}, {"token": "casually", "attention": 0.2857}, {"token": "flying,", "attention": 0.8285}, {"token": "cool,", "attention": 0.6029}, {"token": "that's", "attention": 0.4367}, {"token": "fine,", "attention": 0.5325}, {"token": "I'm", "attention": 0.5539}, {"token": "fine.\"", "attention": 0.4128}, {"token": "The", "attention": 0.8314}, {"token": "kid's", "attention": 0.2644}, {"token": "mask", "attention": 0.3989}, {"token": "swiveled", "attention": 0.8129}, {"token": "up,", "attention": 0.735}, {"token": "taking", "attention": 0.4654}, {"token": "in", "attention": 0.9777}, {"token": "the", "attention": 0.7139}, {"token": "cape,", "attention": 0.4768}, {"token": "the", "attention": 0.9446}, {"token": "S,", "attention": 0.0011}, {"token": "the", "attention": 0.7225}, {"token": "general", "attention": 0.5838}, {"token": "aura", "attention": 0.5828}, {"token": "of", "attention": 0.6449}, {"token": "a", "attention": 0.4131}, {"token": "man", "attention": 0.9897}, {"token": "who", "attention": 0.461}, {"token": "benched", "attention": 0.6619}, {"token": "planets", "attention": 0.9701}, {"token": "for", "attention": 0.1371}, {"token": "fun.", "attention": 0.7902}]}}, {"chapter_number": 2, "id": "the_shift", "title": "The Shift", "structural_role": "rising_tension", "text": "Getting to the source meant going through the tear together, and the crossing itself nearly killed the plan before it started -- Superman came through steady, boots first, and Spider-Man came through screaming, webbing wildly at nothing until he hit a wall that turned out to be Superman's shoulder. \"You couldn't catch me?\" \"I didn't know which way was up either.\" \"You're an alien! Isn't up-and-down, like, your whole thing?\" \"Not during interdimensional transit, no.\" They found the source in what used to be a research facility, now folded in on itself at angles that hurt to look at directly, and the thing generating the tear wasn't a person so much as a process -- something feeding on the seam between worlds and widening it. \"I can't punch a concept,\" Superman said, testing that theory anyway, and getting nowhere. \"Cool, love that for us.\" Spider-Man was already circling, tracking the energy patterns with the specific focus he usually saved for actual science homework. \"Okay, but what if it's not a concept, what if it's a machine wearing a concept costume -- gimme two minutes.\" \"You have a plan?\" \"I have forty percent of a plan and a lot of confidence.\" Superman almost laughed, which surprised him more than the tear had. \"That's usually enough for me too.\" Something in how easily that landed -- two strangers, already reading each other -- neither of them commented on it, but both of them noticed.", "detected_tropes": [{"trope_id": "second_chance", "trope_name": "Second Chance", "score": 0.22, "evidence": [{"sentence": "Isn't up-and-down, like, your whole thing?\" \"Not during interdimensional transit, no.\" They found the source in what used to be a research facility, now folded in on itself at angles that hurt to look at directly, and the thing generating the tear wasn't a person so much as a process -- something feeding on the seam between worlds and widening it.", "matched_markers": ["used to"], "method": "keyword"}]}], "top_trope": "Second Chance", "brainrot_text": "so crossing through the tear TOGETHER almost kills the whole plan because Superman comes through smooth, boots first, hero landing, and Spider-Man comes through SCREAMING web-slinging at nothing until he faceplants into Superman's shoulder. \"you couldn't catch me?\" \"I didn't know which way was up either.\" \"you're an ALIEN, isn't up-and-down like your whole thing??\" they find the source and it's not even a guy, it's basically a machine EATING the seam between worlds. \"I can't punch a concept\" Superman says, tries anyway, gets nothing. \"cool love that for us\" and Spider-Man's already circling, tracking energy patterns like it's actual science homework for once. \"okay but what if it's not a concept what if it's a machine WEARING a concept costume, gimme two minutes.\" \"you have a plan?\" \"I have forty percent of a plan and a LOT of confidence.\" Superman almost laughs, which surprises him more than the tear did. \"that's usually enough for me too.\" bro code activated. instant chemistry, purely professional.", "attention_lens": {"sentence": "Isn't up-and-down, like, your whole thing?\" \"Not during interdimensional transit, no.\" They found the source in what used to be a research facility, now folded in on itself at angles that hurt to look at directly, and the thing generating the tear wasn't a person so much as a process -- something feeding on the seam between worlds and widening it.", "tokens": [{"token": "Isn't", "attention": 0.0}, {"token": "up-and-down,", "attention": 0.4226}, {"token": "like,", "attention": 0.6053}, {"token": "your", "attention": 0.6303}, {"token": "whole", "attention": 0.0775}, {"token": "thing?\"", "attention": 0.2959}, {"token": "\"Not", "attention": 0.1344}, {"token": "during", "attention": 0.3513}, {"token": "interdimensional", "attention": 0.4018}, {"token": "transit,", "attention": 0.5965}, {"token": "no.\"", "attention": 0.3315}, {"token": "They", "attention": 0.4549}, {"token": "found", "attention": 0.492}, {"token": "the", "attention": 0.2745}, {"token": "source", "attention": 0.4871}, {"token": "in", "attention": 0.4398}, {"token": "what", "attention": 1.0}, {"token": "used", "attention": 0.7823}, {"token": "to", "attention": 0.5991}, {"token": "be", "attention": 0.2493}, {"token": "a", "attention": 0.5045}, {"token": "research", "attention": 0.2266}, {"token": "facility,", "attention": 0.3705}, {"token": "now", "attention": 0.4058}, {"token": "folded", "attention": 0.4232}, {"token": "in", "attention": 0.3359}, {"token": "on", "attention": 0.879}, {"token": "itself", "attention": 0.5846}, {"token": "at", "attention": 0.3722}, {"token": "angles", "attention": 0.5723}, {"token": "that", "attention": 0.4659}, {"token": "hurt", "attention": 0.7549}, {"token": "to", "attention": 0.7614}, {"token": "look", "attention": 0.2613}, {"token": "at", "attention": 0.1668}, {"token": "directly,", "attention": 0.3693}, {"token": "and", "attention": 0.4466}, {"token": "the", "attention": 0.5281}, {"token": "thing", "attention": 0.3868}, {"token": "generating", "attention": 0.3613}, {"token": "the", "attention": 0.3789}, {"token": "tear", "attention": 0.4833}, {"token": "wasn't", "attention": 0.9241}, {"token": "a", "attention": 0.5366}, {"token": "person", "attention": 0.5625}, {"token": "so", "attention": 0.1094}, {"token": "much", "attention": 0.7747}, {"token": "as", "attention": 0.8382}, {"token": "a", "attention": 0.9342}, {"token": "process", "attention": 0.6307}, {"token": "--", "attention": 0.6785}, {"token": "something", "attention": 0.2944}, {"token": "feeding", "attention": 0.6731}, {"token": "on", "attention": 0.5992}, {"token": "the", "attention": 0.2116}, {"token": "seam", "attention": 0.6245}, {"token": "between", "attention": 0.2734}, {"token": "worlds", "attention": 0.4358}, {"token": "and", "attention": 0.4313}, {"token": "widening", "attention": 0.6338}, {"token": "it.", "attention": 0.5731}]}}, {"chapter_number": 3, "id": "the_turn", "title": "The Turn", "structural_role": "turning_point", "text": "The forty percent plan needed someone inside the feedback loop to redirect the energy, which meant someone had to physically hold the seam open long enough for the redirect to take, and the only person strong enough to survive that pressure wasn't the one who understood the wiring. \"That's a one-person job and it's gonna be you,\" Spider-Man said, already rigging the last conduit, not looking up. \"And you're going to be standing in the blast radius rerouting a machine you've known about for eleven minutes.\" \"Ten, actually, but who's counting.\" \"I'm serious.\" \"So am I! This is what I do, I fix the thing nobody else can reach while somebody stronger holds the door.\" He finally looked up, and under the mask his voice dropped the jokes entirely. \"I've done this before. Different door. I know how to not die, mostly.\" Superman studied him for a long moment -- a kid, objectively, however many worlds he'd already saved -- and made a decision he wouldn't have made an hour ago. \"If this goes wrong, I'm pulling you out, plan or no plan.\" \"Wouldn't want it any other way, big guy.\" \"I mean it.\" \"I know.\" Something passed between them that hadn't been there ninety minutes ago -- not friendship exactly, not yet, but the specific trust of two people who'd decided, independently, that the other one was worth building a plan around. Superman put both hands on the seam and held on.", "detected_tropes": [{"trope_id": "secret_identity", "trope_name": "Secret Identity", "score": 0.22, "evidence": [{"sentence": "This is what I do, I fix the thing nobody else can reach while somebody stronger holds the door.\" He finally looked up, and under the mask his voice dropped the jokes entirely.", "matched_markers": ["mask"], "method": "keyword"}]}, {"trope_id": "hurt_comfort", "trope_name": "Hurt/Comfort", "score": 0.22, "evidence": [{"sentence": "Superman put both hands on the seam and held on.", "matched_markers": ["held"], "method": "keyword"}]}], "top_trope": "Secret Identity", "brainrot_text": "the plan needs someone to physically hold the seam open while someone else reroutes the whole system, and Superman's the only one strong enough to survive it, but Spider-Man's the only one who gets the wiring. \"that's a one person job and it's gonna be you\" Spider-Man says, already rigging the last conduit, not even looking up. \"and you're standing in the blast radius of a machine you've known about for eleven minutes.\" \"ten actually but who's counting.\" \"I'm serious.\" \"SO AM I this is literally what I do, fix the unreachable thing while somebody stronger holds the door.\" drops the jokes for a sec. \"I've done this before. different door. I know how to not die, mostly.\" Superman looks at this kid, genuinely a KID however many worlds he's saved, and makes a call he wouldn't have made an hour ago. \"if this goes wrong I'm pulling you out, plan or no plan.\" \"wouldn't want it any other way, big guy.\" \"I mean it.\" \"I know.\" trust: ACQUIRED. Superman grabs the seam and holds on.", "attention_lens": {"sentence": "This is what I do, I fix the thing nobody else can reach while somebody stronger holds the door.\" He finally looked up, and under the mask his voice dropped the jokes entirely.", "tokens": [{"token": "This", "attention": 0.6862}, {"token": "is", "attention": 0.0}, {"token": "what", "attention": 1.0}, {"token": "I", "attention": 0.3256}, {"token": "do,", "attention": 0.122}, {"token": "I", "attention": 0.0856}, {"token": "fix", "attention": 0.4073}, {"token": "the", "attention": 0.5567}, {"token": "thing", "attention": 0.2529}, {"token": "nobody", "attention": 0.0153}, {"token": "else", "attention": 0.4271}, {"token": "can", "attention": 0.5628}, {"token": "reach", "attention": 0.3276}, {"token": "while", "attention": 0.5515}, {"token": "somebody", "attention": 0.6739}, {"token": "stronger", "attention": 0.8905}, {"token": "holds", "attention": 0.456}, {"token": "the", "attention": 0.5559}, {"token": "door.\"", "attention": 0.4039}, {"token": "He", "attention": 0.2893}, {"token": "finally", "attention": 0.2669}, {"token": "looked", "attention": 0.3343}, {"token": "up,", "attention": 0.8066}, {"token": "and", "attention": 0.554}, {"token": "under", "attention": 0.218}, {"token": "the", "attention": 0.1598}, {"token": "mask", "attention": 0.6379}, {"token": "his", "attention": 0.2304}, {"token": "voice", "attention": 0.4241}, {"token": "dropped", "attention": 0.3272}, {"token": "the", "attention": 0.3473}, {"token": "jokes", "attention": 0.3494}, {"token": "entirely.", "attention": 0.384}]}}, {"chapter_number": 4, "id": "the_resolution", "title": "The Resolution", "structural_role": "resolution", "text": "The redirect took on the third try, the tear folding shut with a sound like a held breath finally released, and Spider-Man hit the ground hard enough to need a second to just lie there and confirm he still could. \"We did the thing.\" \"We did the thing.\" Superman offered a hand up, and Spider-Man took it, and for a second neither of them said anything else -- just the particular quiet of two people who'd trusted each other with something and had it hold. \"So,\" Spider-Man said, dusting off a suit that had seen better days, \"quick question, and no wrong answers -- is there, like, a way home from here, or did I just relocate permanently.\" \"There's a way home. I can get you there.\" \"Cool. Cool cool cool. Also, and I cannot stress this enough -- if there's ever a next time, and I have this weird feeling there might be -- I'd take you on my team again.\" Superman actually smiled at that, unguarded, in a way he hadn't all day. \"Same. Try not to fall through any more tears in the meantime.\" \"No promises.\" They stood in the wreckage of a research facility that belonged to neither of their worlds, two strangers who'd spent one impossible afternoon becoming something closer to allies, and Superman realized, flying him home a few minutes later, that he was already hoping the kid had been right about a next time.", "detected_tropes": [{"trope_id": "found_family", "trope_name": "Found Family", "score": 0.66, "evidence": [{"sentence": "\"So,\" Spider-Man said, dusting off a suit that had seen better days, \"quick question, and no wrong answers -- is there, like, a way home from here, or did I just relocate permanently.\" \"There's a way home.", "matched_markers": ["home"], "method": "keyword"}, {"sentence": "Try not to fall through any more tears in the meantime.\" \"No promises.\" They stood in the wreckage of a research facility that belonged to neither of their worlds, two strangers who'd spent one impossible afternoon becoming something closer to allies, and Superman realized, flying him home a few minutes later, that he was already hoping the kid had been right about a next time.", "matched_markers": ["home", "belonged"], "method": "keyword"}]}, {"trope_id": "hurt_comfort", "trope_name": "Hurt/Comfort", "score": 0.22, "evidence": [{"sentence": "The redirect took on the third try, the tear folding shut with a sound like a held breath finally released, and Spider-Man hit the ground hard enough to need a second to just lie there and confirm he still could.", "matched_markers": ["held"], "method": "keyword"}]}, {"trope_id": "second_chance", "trope_name": "Second Chance", "score": 0.22, "evidence": [{"sentence": "Also, and I cannot stress this enough -- if there's ever a next time, and I have this weird feeling there might be -- I'd take you on my team again.\" Superman actually smiled at that, unguarded, in a way he hadn't all day.", "matched_markers": ["again"], "method": "keyword"}]}], "top_trope": "Found Family", "brainrot_text": "redirect works on try three, tear folds shut like a held breath finally let go, Spider-Man hits the ground and just LIES there confirming he's still alive. \"we did the thing.\" \"we did the thing.\" Superman helps him up, neither of them says anything for a sec, just vibing in the specific silence of two people who trusted each other and it WORKED. \"so\" Spider-Man says, dusting off a suit that's seen better days, \"quick question no wrong answers, is there a way home or did I just relocate PERMANENTLY.\" \"there's a way home, I got you.\" \"cool cool cool. also and I cannot stress this enough, if there's ever a next time, and I have a WEIRD feeling there might be, I'd take you on my team again.\" Superman actually smiles, unguarded, first time all day. \"same. try not to fall through any more tears meanwhile.\" \"no promises.\" two strangers, one impossible afternoon, now basically allies, and Superman's already hoping the kid was right about a next time. NEW BESTIE UNLOCKED.", "attention_lens": {"sentence": "\"So,\" Spider-Man said, dusting off a suit that had seen better days, \"quick question, and no wrong answers -- is there, like, a way home from here, or did I just relocate permanently.\" \"There's a way home.", "tokens": [{"token": "\"So,\"", "attention": 0.5592}, {"token": "Spider-Man", "attention": 0.8955}, {"token": "said,", "attention": 0.6057}, {"token": "dusting", "attention": 0.4389}, {"token": "off", "attention": 0.488}, {"token": "a", "attention": 0.6891}, {"token": "suit", "attention": 1.0}, {"token": "that", "attention": 0.3344}, {"token": "had", "attention": 0.0}, {"token": "seen", "attention": 0.3293}, {"token": "better", "attention": 0.7059}, {"token": "days,", "attention": 0.2721}, {"token": "\"quick", "attention": 0.3478}, {"token": "question,", "attention": 0.0654}, {"token": "and", "attention": 0.4941}, {"token": "no", "attention": 0.1043}, {"token": "wrong", "attention": 0.2521}, {"token": "answers", "attention": 0.0101}, {"token": "--", "attention": 0.1216}, {"token": "is", "attention": 0.657}, {"token": "there,", "attention": 0.7051}, {"token": "like,", "attention": 0.4419}, {"token": "a", "attention": 0.7563}, {"token": "way", "attention": 0.8183}, {"token": "home", "attention": 0.6316}, {"token": "from", "attention": 0.047}, {"token": "here,", "attention": 0.6033}, {"token": "or", "attention": 0.8728}, {"token": "did", "attention": 0.1694}, {"token": "I", "attention": 0.5848}, {"token": "just", "attention": 0.1287}, {"token": "relocate", "attention": 0.8459}, {"token": "permanently.\"", "attention": 0.0145}, {"token": "\"There's", "attention": 0.324}, {"token": "a", "attention": 0.3318}, {"token": "way", "attention": 0.9789}, {"token": "home.", "attention": 0.2535}]}}]}, "structural_summary": {"setup": ["Secret Identity", "Fish Out of Water"], "rising_tension": ["Second Chance"], "turning_point": ["Secret Identity", "Hurt/Comfort"], "resolution": ["Found Family", "Hurt/Comfort", "Second Chance"]}};
+let chaptersRevealed = 1;
+let brainrotState = {};
+
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+function renderPortraits(portraits){
+  const frameA = document.getElementById('portraitFrameA');
+  const frameB = document.getElementById('portraitFrameB');
+  const labelA = document.getElementById('portraitLabelA');
+  const labelB = document.getElementById('portraitLabelB');
+  if(!frameA || !frameB) return;
+
+  const fill = (frame, label, p) => {
+    frame.innerHTML = '';
+    p = p || {};
+    if(p.image){
+      const img = document.createElement('img');
+      img.src = p.image;
+      img.alt = p.title || '';
+      // if the image URL 404s or fails to decode, fall back to the
+      // placeholder rather than showing a broken-image icon
+      img.onerror = () => { frame.innerHTML = '<span class="portrait-placeholder">?</span>'; };
+      frame.appendChild(img);
+    } else {
+      frame.appendChild(el('span', 'portrait-placeholder', '?'));
+    }
+    if(label) label.textContent = p.title || '';
+  };
+
+  fill(frameA, labelA, portraits && portraits.char_a);
+  fill(frameB, labelB, portraits && portraits.char_b);
+}
+
+function pulseDuoConnector(){
+  const x = document.querySelector('.duo-connector-x');
+  if(!x) return;
+  x.classList.remove('pulsing');
+  // force reflow so the animation restarts if it's already mid-pulse
+  void x.offsetWidth;
+  x.classList.add('pulsing');
+  setTimeout(() => x.classList.remove('pulsing'), 750);
+}
+
+async function loadDemo(){
+  const charAInput = document.getElementById('charA');
+  const charBInput = document.getElementById('charB');
+  const charA = charAInput.value.trim();
+  const charB = charBInput.value.trim();
+  const btn = document.querySelector('.compile-btn');
+  const hint = document.getElementById('demoHint');
+
+  if(!charA || !charB){
+    if(hint) hint.textContent = 'enter both character names first.';
+    return;
+  }
+
+  pulseDuoConnector();
+
+  const originalBtnText = btn.textContent;
+  btn.textContent = 'COMPILING... (calls a real LLM, ~15-30s)';
+  btn.disabled = true;
+  if(hint) hint.textContent = `generating "${charA} × ${charB}" live via your local server...`;
+
+  try {
+    const resp = await fetch('/api/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({char_a: charA, char_b: charB})
+    });
+    const result = await resp.json();
+    if(!resp.ok){
+      throw new Error(result.error || 'Generation failed.');
+    }
+    DATA.story = result.story;
+    DATA.structural_summary = result.structural_summary;
+    DATA.taxonomy = result.taxonomy || DATA.taxonomy;
+    DATA.meta = result.meta || DATA.meta;
+    chaptersRevealed = 1;
+    brainrotState = {};
+    renderAll();
+    renderPortraits(result.portraits);
+    pulseDuoConnector();
+    if(hint){
+      hint.textContent = `live-generated "${charA} × ${charB}". type a new pair and click again to regenerate.`;
+    }
+  } catch (err) {
+    chaptersRevealed = 1;
+    brainrotState = {};
+    renderAll();
+    renderPortraits(null);
+    if(hint){
+      hint.textContent = `couldn't generate live (${err.message}). Make sure you started this with ` +
+        `"python server.py" and opened http://localhost:5000 -- not by double-clicking dashboard.html. ` +
+        `Showing the existing story instead.`;
+    }
+  } finally {
+    btn.textContent = originalBtnText;
+    btn.disabled = false;
+  }
+}
+
+function renderNav(){
+  const nav = document.getElementById('chapterNav');
+  nav.innerHTML = '';
+  DATA.story.chapters.forEach((ch, i) => {
+    const tab = el('div', 'disk-tab' + (i+1 > chaptersRevealed ? ' locked' : '') + (i+1 === chaptersRevealed ? ' active' : ''),
+      `<span class="floppy"></span> CH.${ch.chapter_number}`);
+    if(i+1 <= chaptersRevealed){
+      tab.onclick = () => { chaptersRevealed = i+1; renderAll(); };
+    }
+    nav.appendChild(tab);
+  });
+}
+
+function renderChapters(){
+  const area = document.getElementById('chapterArea');
+  area.innerHTML = '';
+  for(let i=0; i<chaptersRevealed; i++){
+    const ch = DATA.story.chapters[i];
+    const isBrainrot = !!brainrotState[ch.chapter_number];
+    const card = el('div', 'diary-card' + (isBrainrot ? ' brainrot' : ''));
+    card.innerHTML = `
+      <h3>Ch.${ch.chapter_number} — ${ch.title}</h3>
+      <span class="role-tag">structural role: ${ch.structural_role}</span>
+      <div class="mode-toggle">
+        <div class="switch ${isBrainrot ? 'on' : ''}" onclick="toggleBrainrot(${ch.chapter_number}, this)"><div class="knob"></div></div>
+        <span>${isBrainrot ? '🌀 BRAINROT MODE' : '📖 LORE MODE'}</span>
+      </div>
+      <p id="text-${ch.chapter_number}">${isBrainrot ? ch.brainrot_text : ch.text}</p>
+    `;
+    area.appendChild(card);
+  }
+  document.getElementById('nextBtn').style.display =
+    chaptersRevealed >= DATA.story.chapters.length ? 'none' : 'block';
+}
+
+function toggleBrainrot(chapterNum, switchEl){
+  brainrotState[chapterNum] = !brainrotState[chapterNum];
+  switchEl.classList.toggle('on');
+  const card = switchEl.closest('.diary-card');
+  card.classList.add('glitch');
+  setTimeout(() => {
+    renderChapters();
+  }, 180);
+}
+
+function revealNext(){
+  if(chaptersRevealed < DATA.story.chapters.length){
+    chaptersRevealed++;
+    renderAll();
+  }
+}
+
+function renderMeter(){
+  const track = document.getElementById('heartTrack');
+  track.innerHTML = '';
+  const totalHearts = 10;
+  const filled = Math.round((chaptersRevealed / DATA.story.chapters.length) * totalHearts);
+  for(let i=0; i<totalHearts; i++){
+    track.appendChild(el('span', i < filled ? 'filled' : '', '⚡'));
+  }
+}
+
+function renderBadges(){
+  const box = document.getElementById('tropeBadges');
+  box.innerHTML = '';
+  const seen = new Set();
+  for(let i=0; i<chaptersRevealed; i++){
+    const ch = DATA.story.chapters[i];
+    ch.detected_tropes.forEach(t => {
+      if(seen.has(t.trope_id)) return;
+      seen.add(t.trope_id);
+      const sticker = el('div', 'trope-sticker');
+      const evidence = t.evidence.map(e => e.sentence).join(' / ');
+      sticker.innerHTML = `${t.trope_name} <span class="score">(${t.score})</span>
+        <div class="evidence-box">"${evidence}"</div>`;
+      box.appendChild(sticker);
+    });
+  }
+  if(seen.size === 0){
+    box.appendChild(el('div', 'trope-sticker', 'no strong matches yet — keep reading'));
+  }
+}
+
+function renderStructural(){
+  const rows = document.getElementById('structuralRows');
+  rows.innerHTML = '';
+  Object.entries(DATA.structural_summary).forEach(([role, tropes]) => {
+    rows.appendChild(el('div', 'structural-row',
+      `<span class="role-label">${role}</span><span class="trope-list">${tropes.length ? tropes.join(', ') : '—'}</span>`));
+  });
+}
+
+function attnColor(weight){
+  // low weight -> near-black, high weight -> bright cyan
+  const intensity = Math.round(weight * 255);
+  return `rgba(0, ${Math.round(150 + weight*105)}, ${Math.round(180+weight*75)}, ${0.15 + weight*0.75})`;
+}
+
+function renderAttention(){
+  const panel = document.getElementById('attentionPanel');
+  const currentChapter = DATA.story.chapters[chaptersRevealed - 1];
+  const lens = currentChapter && currentChapter.attention_lens;
+  if(!lens){ panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  document.getElementById('attentionNote').textContent =
+    "self-attention weights from GPT-2's final layer (averaged across heads) -- " +
+    "brighter word = more weight the model placed on it when processing this sentence. " +
+    (DATA.meta.attention_note || '');
+  const sentEl = document.getElementById('attentionSentence');
+  sentEl.innerHTML = lens.tokens.map(t =>
+    `<span class="attn-token" style="background:${attnColor(t.attention)}">${t.token}</span>`
+  ).join(' ');
+}
+
+function renderFormDefaults(){
+  const charA = document.getElementById('charA');
+  const charB = document.getElementById('charB');
+  if(charA && !charA.value) charA.value = DATA.story.char_a;
+  if(charB && !charB.value) charB.value = DATA.story.char_b;
+  const hint = document.getElementById('demoHint');
+  if(hint){
+    hint.textContent = `demo runs on a pre-generated sample story (${DATA.story.char_a} × ${DATA.story.char_b}) ` +
+      `classified with the real trope engine. hook up your own GROQ_API_KEY to generate live for any pair ` +
+      `(run the Python pipeline, then rebuild -- typing names here doesn't call the API live).`;
+  }
+}
+
+function renderAll(){
+  renderFormDefaults();
+  renderNav();
+  renderChapters();
+  renderMeter();
+  renderBadges();
+  renderStructural();
+  renderAttention();
+}
+
+renderAll();
+
+// boot sequence
+const bootLines = ['bl1','bl2','bl3','bl4','bl5'];
+bootLines.forEach((id, i) => {
+  setTimeout(() => {
+    const line = document.getElementById(id);
+    if(line) line.classList.add('show');
+  }, 220 * i);
+});
+setTimeout(() => {
+  const overlay = document.getElementById('bootOverlay');
+  if(overlay) overlay.classList.add('hidden');
+}, 220 * bootLines.length + 500);
+
+// cursor sparkle trail
+const SPARKLE_CHARS = ['✦','★','✧','🩷','⋆'];
+let lastSparkle = 0;
+document.addEventListener('mousemove', (e) => {
+  const now = Date.now();
+  if(now - lastSparkle < 55) return;
+  lastSparkle = now;
+  const s = document.createElement('div');
+  s.className = 'sparkle-trail';
+  s.textContent = SPARKLE_CHARS[Math.floor(Math.random()*SPARKLE_CHARS.length)];
+  s.style.left = (e.clientX + (Math.random()*10-5)) + 'px';
+  s.style.top = (e.clientY + (Math.random()*10-5)) + 'px';
+  s.style.color = ['#FF2E9A','#00E5FF','#C6FF00','#7B2FF7'][Math.floor(Math.random()*4)];
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 700);
+});
+</script>
+</body>
+</html>

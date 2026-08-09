@@ -1,0 +1,34 @@
+{
+  "char_a": "Superman",
+  "char_b": "Spider-Man",
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "id": "the_spark",
+      "title": "The Spark",
+      "structural_role": "setup",
+      "text": "The tear in the sky over Metropolis looked like a crack in glass, edges sparking gold, and Superman was already flying toward it when something came through first -- a kid in a red-and-blue suit, mid-swing, mid-sentence, tumbling out of a web-line that no longer connected to anything. \"Okay, that is NOT my building,\" the kid said, scrambling upright on a rooftop that definitely wasn't Queens. Superman landed a few feet away, more careful than he needed to be. \"You're not from around here.\" \"Yeah, I got that, thanks, big guy who's just -- casually flying, cool, that's fine, I'm fine.\" The kid's mask swiveled up, taking in the cape, the S, the general aura of a man who benched planets for fun. \"Please tell me you're one of the good ones.\" \"I could ask you the same thing.\" \"Spider-Man. Friendly neighborhood, usually, current neighborhood unclear.\" He gestured at the still-sparking tear overhead. \"That thing spit me out about ninety seconds ago and I've already decided I don't love it.\" Superman studied the tear, doing the math on gravitational shear and dimensional bleed, and didn't love it either. \"Superman. And that's not closing on its own.\" \"Cool. Cool cool cool. So what's the plan?\" \"You're the one who fell through it. Any idea what's on the other side?\" Spider-Man was quiet for a second, and when he answered, some of the jokes dropped out of his voice. \"Yeah. My city. Still standing, last I checked. I'd like to keep it that way.\" Superman nodded once, already recalculating the day. \"Then let's go see what's holding it open.\""
+    },
+    {
+      "chapter_number": 2,
+      "id": "the_shift",
+      "title": "The Shift",
+      "structural_role": "rising_tension",
+      "text": "Getting to the source meant going through the tear together, and the crossing itself nearly killed the plan before it started -- Superman came through steady, boots first, and Spider-Man came through screaming, webbing wildly at nothing until he hit a wall that turned out to be Superman's shoulder. \"You couldn't catch me?\" \"I didn't know which way was up either.\" \"You're an alien! Isn't up-and-down, like, your whole thing?\" \"Not during interdimensional transit, no.\" They found the source in what used to be a research facility, now folded in on itself at angles that hurt to look at directly, and the thing generating the tear wasn't a person so much as a process -- something feeding on the seam between worlds and widening it. \"I can't punch a concept,\" Superman said, testing that theory anyway, and getting nowhere. \"Cool, love that for us.\" Spider-Man was already circling, tracking the energy patterns with the specific focus he usually saved for actual science homework. \"Okay, but what if it's not a concept, what if it's a machine wearing a concept costume -- gimme two minutes.\" \"You have a plan?\" \"I have forty percent of a plan and a lot of confidence.\" Superman almost laughed, which surprised him more than the tear had. \"That's usually enough for me too.\" Something in how easily that landed -- two strangers, already reading each other -- neither of them commented on it, but both of them noticed."
+    },
+    {
+      "chapter_number": 3,
+      "id": "the_turn",
+      "title": "The Turn",
+      "structural_role": "turning_point",
+      "text": "The forty percent plan needed someone inside the feedback loop to redirect the energy, which meant someone had to physically hold the seam open long enough for the redirect to take, and the only person strong enough to survive that pressure wasn't the one who understood the wiring. \"That's a one-person job and it's gonna be you,\" Spider-Man said, already rigging the last conduit, not looking up. \"And you're going to be standing in the blast radius rerouting a machine you've known about for eleven minutes.\" \"Ten, actually, but who's counting.\" \"I'm serious.\" \"So am I! This is what I do, I fix the thing nobody else can reach while somebody stronger holds the door.\" He finally looked up, and under the mask his voice dropped the jokes entirely. \"I've done this before. Different door. I know how to not die, mostly.\" Superman studied him for a long moment -- a kid, objectively, however many worlds he'd already saved -- and made a decision he wouldn't have made an hour ago. \"If this goes wrong, I'm pulling you out, plan or no plan.\" \"Wouldn't want it any other way, big guy.\" \"I mean it.\" \"I know.\" Something passed between them that hadn't been there ninety minutes ago -- not friendship exactly, not yet, but the specific trust of two people who'd decided, independently, that the other one was worth building a plan around. Superman put both hands on the seam and held on."
+    },
+    {
+      "chapter_number": 4,
+      "id": "the_resolution",
+      "title": "The Resolution",
+      "structural_role": "resolution",
+      "text": "The redirect took on the third try, the tear folding shut with a sound like a held breath finally released, and Spider-Man hit the ground hard enough to need a second to just lie there and confirm he still could. \"We did the thing.\" \"We did the thing.\" Superman offered a hand up, and Spider-Man took it, and for a second neither of them said anything else -- just the particular quiet of two people who'd trusted each other with something and had it hold. \"So,\" Spider-Man said, dusting off a suit that had seen better days, \"quick question, and no wrong answers -- is there, like, a way home from here, or did I just relocate permanently.\" \"There's a way home. I can get you there.\" \"Cool. Cool cool cool. Also, and I cannot stress this enough -- if there's ever a next time, and I have this weird feeling there might be -- I'd take you on my team again.\" Superman actually smiled at that, unguarded, in a way he hadn't all day. \"Same. Try not to fall through any more tears in the meantime.\" \"No promises.\" They stood in the wreckage of a research facility that belonged to neither of their worlds, two strangers who'd spent one impossible afternoon becoming something closer to allies, and Superman realized, flying him home a few minutes later, that he was already hoping the kid had been right about a next time."
+    }
+  ]
+}

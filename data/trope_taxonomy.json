@@ -1,0 +1,100 @@
+{
+  "tropes": [
+    {
+      "id": "forced_team_up",
+      "name": "Forced Team-Up",
+      "definition": "Circumstances compel two characters who wouldn't normally work together to collaborate against their initial preference.",
+      "markers": ["had no choice", "stuck working together", "paired against", "forced to team up", "no other option"]
+    },
+    {
+      "id": "rivals_to_allies",
+      "name": "Rivals to Allies",
+      "definition": "Characters who begin in competition or conflict develop genuine mutual respect and become allies through shared adversity.",
+      "markers": ["worthy opponent", "respect", "finally understood", "equal", "impressed despite", "on the same side"]
+    },
+    {
+      "id": "found_family",
+      "name": "Found Family",
+      "definition": "Characters build a familial, non-romantic bond with people who are not biologically related, often replacing or supplementing absent family.",
+      "markers": ["like family", "chosen family", "took care of", "protect each other", "home", "belonged"]
+    },
+    {
+      "id": "found_siblings",
+      "name": "Found Siblings",
+      "definition": "Two characters develop a sibling-like bond -- protective, teasing, unconditionally loyal -- despite no biological relation.",
+      "markers": ["like a sister", "like a brother", "annoying but", "always got my back", "family now"]
+    },
+    {
+      "id": "odd_couple",
+      "name": "Odd Couple",
+      "definition": "Characters with contrasting personalities, values, or methods are forced into cooperation, and their differences become a source of both friction and strength.",
+      "markers": ["so different", "unlikely pair", "never expected", "opposite of", "shouldn't work but"]
+    },
+    {
+      "id": "secret_identity",
+      "name": "Secret Identity",
+      "definition": "One character conceals a crucial truth about themselves (an identity, power, or origin) from the other, creating tension around eventual discovery.",
+      "markers": ["couldn't tell them", "secret", "if they knew", "hidden truth", "mask", "real identity"]
+    },
+    {
+      "id": "hurt_comfort",
+      "name": "Hurt/Comfort",
+      "definition": "One character is physically or emotionally wounded, and the other provides platonic care, support, or protection.",
+      "markers": ["wounded", "held", "bandaged", "stayed by", "you're safe now", "took care of", "comforted"]
+    },
+    {
+      "id": "protective_streak",
+      "name": "Protective Streak",
+      "definition": "One character displays strong instinctive protectiveness over the other, often before real trust has been established.",
+      "markers": ["stepped between", "wouldn't let anyone", "protect", "guarded", "shielded"]
+    },
+    {
+      "id": "mentor_and_student",
+      "name": "Mentor and Student",
+      "definition": "A more experienced character guides a less experienced one, with the dynamic evolving as the student grows into their own capability.",
+      "markers": ["taught", "showed them how", "learned from", "wasn't ready", "proved themselves"]
+    },
+    {
+      "id": "miscommunication",
+      "name": "Miscommunication",
+      "definition": "Conflict or delay is driven primarily by characters misunderstanding each other's words, actions, or intentions.",
+      "markers": ["misunderstood", "didn't mean", "wrong idea", "assumed", "never explained"]
+    },
+    {
+      "id": "role_reversal",
+      "name": "Role Reversal",
+      "definition": "Characters swap typical dynamics of power, dependence, or expertise, forcing new interaction patterns.",
+      "markers": ["now it was", "roles reversed", "for once", "the tables had turned"]
+    },
+    {
+      "id": "betrayal_and_reconciliation",
+      "name": "Betrayal and Reconciliation",
+      "definition": "Trust between characters is broken by a real or perceived betrayal, and the story tracks whether and how it's repaired.",
+      "markers": ["betrayed", "how could you", "trusted you", "made it right", "forgive"]
+    },
+    {
+      "id": "fish_out_of_water",
+      "name": "Fish Out of Water",
+      "definition": "A character finds themselves operating by unfamiliar rules, culture, or context (often the driving premise of a crossover), and must adapt.",
+      "markers": ["not from around here", "different rules", "wasn't used to", "strange to them", "different world"]
+    },
+    {
+      "id": "second_chance",
+      "name": "Second Chance",
+      "definition": "Characters with a lapsed or damaged relationship are given renewed opportunity to reconnect.",
+      "markers": ["years later", "again", "second chance", "back then", "used to", "remembered when"]
+    },
+    {
+      "id": "loyalty_tested",
+      "name": "Loyalty Tested",
+      "definition": "A character faces a situation that directly tests where their loyalty truly lies, often between competing obligations.",
+      "markers": ["had to choose", "loyalty", "whose side", "torn between", "proved where"]
+    },
+    {
+      "id": "unlikely_alliance",
+      "name": "Unlikely Alliance",
+      "definition": "Characters from fundamentally different worlds, value systems, or factions set aside their differences to cooperate toward a shared goal.",
+      "markers": ["never thought we'd", "different worlds", "common enemy", "set aside", "worked together despite"]
+    }
+  ]
+}
