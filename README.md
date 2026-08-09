@@ -1,6 +1,5 @@
-# 🩷 ShipIt.exe — AI Fanfiction Trope Compatibility Engine
+#  ShipIt.exe — AI Fanfiction Trope Compatibility Engine
 
-**MSc AI/ML Mini Project — Christ (Deemed to be University), Department of MCA**
 
 ---
 
